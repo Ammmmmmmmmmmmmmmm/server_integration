@@ -16,6 +16,8 @@ Once it has figured out if the admin has sent a command it will then find out wh
 
 ## Commands
 
+Type these commands in-game as a player in factorio!
+
 ```bash
 #Stops factorio and python script
 ~stop
