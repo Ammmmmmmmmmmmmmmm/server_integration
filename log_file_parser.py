@@ -11,16 +11,17 @@ def is_command(command):
 		f.truncate(0)
 		subprocess.run('./stop.sh', shell=True)
 	#restart server from previous save
-	else if command == "~back":
+	elif command == "~back":
 		pass
 	#delete saves and make a new map
-	else if command == "~reset":
+	elif command == "~reset":
 		#stop factorio
 		subprocess.run('pkill factorio',shell=True)
 		#remove previous saves
-		subprocess.run('rm ./saves/*',shell=True)
+		try:
+			subprocess.run('rm saves/*',shell=True)
 		#make map
-		subprocess.run('bin/64/factorio --create saves/server.zip --map-gen-settings data/map-gen-settings.json --map-settings data/map-settings.json',shell=True)
+		subprocess.run('./new_map',shell=True)
 		#run map
 		subprocess.run('./run.sh',shell=True)
 #is an admin saying a command?
