@@ -31,9 +31,9 @@ Type these commands in-game as a player in factorio!
 
 Usefull Video but don't write his bash scripts such as stop.sh and run.sh, just import my improved ones.
 
-[Headless Setup]https://www.youtube.com/watch?v=EfG2Y6mayDY
+[Headless Setup](https://www.youtube.com/watch?v=EfG2Y6mayDY)
 
-In the video he shows changing alot of data files such as map-gen-settings.example.json
+In the video he shows changing the names of alot of data files such as map-gen-settings.example.json into map-gen-settings.json. Do this as well because those are the names my scripts use.
 
 I recommend setting this up after you already know bin/64/factorio is working and is on the port you want.
 
