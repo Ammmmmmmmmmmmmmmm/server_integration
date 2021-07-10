@@ -21,7 +21,7 @@ def is_command(command):
 		try:
 			subprocess.run('rm saves/*',shell=True)
 		#make map
-		subprocess.run('./new_map',shell=True)
+		subprocess.run('./new_map.sh',shell=True)
 		#run map
 		subprocess.run('./run.sh',shell=True)
 #is an admin saying a command?
