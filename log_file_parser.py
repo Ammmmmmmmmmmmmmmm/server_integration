@@ -7,7 +7,7 @@ import json
 #figure out what command it is and execute
 def is_command(command):
 	#stop server and python script
-	print("finding what command was stated")
+	print("command listed above initiated")
 	if command == "~stop":
 		f.truncate(0)
 		subprocess.run('./stop.sh', shell=True)
@@ -16,6 +16,7 @@ def is_command(command):
 		pass
 	#delete saves and make a new map
 	elif command == "~reset":
+		print("reset initiated")
 		#stop factorio
 		subprocess.run('pkill factorio',shell=True)
 		#remove previous saves
@@ -52,6 +53,11 @@ def find_command(line):
 
 admin_list = []
 command_list = ["~reset", "~back", "~stop"]
+#make sure to start with clean log file
+with open('log.txt',"r+") as f:
+	#clear file
+	print("clearing file")
+	f.truncate(0)
 
 while True:
 	time.sleep(10)
