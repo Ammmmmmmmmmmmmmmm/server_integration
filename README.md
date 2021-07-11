@@ -50,6 +50,7 @@ sudo chown (factorio server folder)
 chmod +x ./log_file_parser
 chmod +x ./stop.sh
 chmod +x ./run.sh
+chmod +x ./new_map.sh
 ```
 
 In order to make yourself admin you will have to add your name to the server-adminlist.json file.
