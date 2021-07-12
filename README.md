@@ -23,7 +23,7 @@ Type these commands in-game as a player in factorio!
 ~stop
 #Stops factorio, deletes saves, creates new map, starts
 ~reset
-#Coming Soon
+#Goes back to last autosave
 ~back
 ```
 

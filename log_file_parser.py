@@ -3,6 +3,7 @@ import subprocess
 import time
 import re
 import json
+import os
 
 def clean():
 	with open('log.txt',"r+") as f:
@@ -19,7 +20,20 @@ def is_command(command):
 		subprocess.run('./stop.sh', shell=True)
 	#restart server from previous save
 	elif command == "~back":
-		pass
+		#stop factorio
+		if len(os.listdir(os.path.join(os.getcwd(),'saves'))) < 2:
+			print("can't go back anymore")
+		else:
+			subprocess.run('pkill factorio',shell=True)
+			current_save = os.listdir(os.path.join(os.getcwd(),'saves'))[0]
+			for save in os.listdir(os.path.join(os.getcwd(),'saves')):
+				if os.path.getmtime(os.path.join(os.getcwd(),'saves',save)) > os.path.getmtime(os.path.join(os.getcwd(),'saves',current_save)):	
+					current_save = save
+			path = os.path.join(os.getcwd(),'saves',current_save)
+			print('removing {}'.format(path))
+			subprocess.run('rm {}'.format(path), shell=True)
+			clean()
+			subprocess.run('./run.sh',shell=True)
 	#delete saves and make a new map
 	elif command == "~reset":
 		print("reset initiated")
