@@ -4,6 +4,12 @@ import time
 import re
 import json
 
+def clean():
+	with open('log.txt',"r+") as f:
+			#clear file
+			print("clearing file")
+			f.truncate(0)
+
 #figure out what command it is and execute
 def is_command(command):
 	#stop server and python script
@@ -27,7 +33,9 @@ def is_command(command):
 		#make map
 		subprocess.run('./new_map.sh',shell=True)
 		#run map
-		subprocess.run('bin/x64/factorio --start-server-load-latest --server-settings data/server-settings.json --server-adminlist server-adminlist.json --console-log log.txt',shell=True)
+		clean()
+		subprocess.run('./run.sh',shell=True)
+
 #is an admin saying a command?
 def find_command(line):
 	for admin in admin_list:
