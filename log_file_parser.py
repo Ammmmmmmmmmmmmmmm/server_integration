@@ -34,15 +34,17 @@ def is_command(command):
 			subprocess.run('pkill factorio',shell=True)
 			time.sleep(3)
 			current_save = os.listdir(os.path.join(os.getcwd(),'saves'))[0]
-			try:
-				subprocess.run('cp saves/server.zip reverts', shell=True)
-				subprocess.run('rm saves/server.zip', shell=True)
-			except:
-				print("no saves yet")
 			for save in os.listdir(os.path.join(os.getcwd(),'saves')):
 				if os.path.getmtime(os.path.join(os.getcwd(),'saves',save)) > os.path.getmtime(os.path.join(os.getcwd(),'saves',current_save)):	
 					current_save = save
 			path = os.path.join(os.getcwd(),'saves',current_save)
+
+			try:
+				subprocess.run('cp {} reverts'.format(path), shell=True)
+				subprocess.run('rm {}'.format(path), shell=True)
+			except:
+				print("no saves yet")
+
 			print('removing {}'.format(path))
 			subprocess.run('rm {}'.format(path), shell=True)
 			clean()
