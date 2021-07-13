@@ -16,19 +16,18 @@ def is_command(command):
 
 	#makes saves folder
 	if "saves" not in os.listdir(os.getcwd()):
-	subprocess.run('mkdir saves', shell=True)
+		subprocess.run('mkdir saves', shell=True)
+	if "reverts" not in os.listdir(os.getcwd()):
+		subprocess.run('mkdir reverts', shell=True)
 	
+
 	#stop server and python script
 	print("command listed above initiated")
 	if command == "~stop":
 		f.truncate(0)
 		subprocess.run('./stop.sh', shell=True)
 	#restart server from previous save
-	elif command == "~back":
-		
-		if "reverts" not in os.listdir(os.getcwd()):
-			subprocess.run('mkdir reverts', shell=True)
-			
+	elif command == "~back":	
 		if len(os.listdir(os.path.join(os.getcwd(),'saves'))) < 2:
 			print("can't go back anymore")
 		else:
