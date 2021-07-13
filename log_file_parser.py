@@ -13,6 +13,11 @@ def clean():
 
 #figure out what command it is and execute
 def is_command(command):
+
+	#makes saves folder
+	if "saves" not in os.listdir(os.getcwd()):
+	subprocess.run('mkdir saves', shell=True)
+	
 	#stop server and python script
 	print("command listed above initiated")
 	if command == "~stop":
@@ -71,8 +76,6 @@ def is_command(command):
 				subprocess.run('./run.sh',shell=True)
 			except:
 				print("no reverts yet")
-				break
-
 
 
 #is an admin saying a command?
