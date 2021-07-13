@@ -1,1 +1,2 @@
+pgrep ./log_file_parser.py -f | xargs -r kill
 ./log_file_parser.py & bin/x64/factorio --start-server-load-latest --server-settings data/server-settings.json --server-adminlist server-adminlist.json --console-log log.txt && fg

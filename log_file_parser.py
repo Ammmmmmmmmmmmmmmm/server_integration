@@ -57,7 +57,7 @@ def find_command(line):
 			print("searching for {} saying {}".format(admin, command))
 			#this pattern will match a command said by an admin
 			pattern = r"^\d+-\d+-\d+\s\d+:\d+:\d+\s\[CHAT\].*"+re.escape(admin)+r":.*"+re.escape(command)+r"$"
-			match = re.search(pattern, line)
+			match = re.search(pattern, line,re.IGNORECASE)
 			if match != None:
 				is_command(command)
 
