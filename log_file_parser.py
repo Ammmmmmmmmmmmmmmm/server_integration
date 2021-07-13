@@ -25,7 +25,12 @@ def is_command(command):
 			print("can't go back anymore")
 		else:
 			subprocess.run('pkill factorio',shell=True)
+			time.sleep(3)
 			current_save = os.listdir(os.path.join(os.getcwd(),'saves'))[0]
+			try:
+				subprocess.run('rm saves/server.zip', shell=True)
+			except:
+				print("no saves yet")
 			for save in os.listdir(os.path.join(os.getcwd(),'saves')):
 				if os.path.getmtime(os.path.join(os.getcwd(),'saves',save)) > os.path.getmtime(os.path.join(os.getcwd(),'saves',current_save)):	
 					current_save = save
@@ -33,6 +38,7 @@ def is_command(command):
 			print('removing {}'.format(path))
 			subprocess.run('rm {}'.format(path), shell=True)
 			clean()
+			print("is running")
 			subprocess.run('./run.sh',shell=True)
 	#delete saves and make a new map
 	elif command == "~reset":
