@@ -25,6 +25,8 @@ Type these commands in-game as a player in factorio!
 ~reset
 #Goes back to last autosave
 ~back
+#Undo last ~back and go back to current (only saves one back)
+~revert
 ```
 
 ## Follow Along

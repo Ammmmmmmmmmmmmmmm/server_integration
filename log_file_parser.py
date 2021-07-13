@@ -28,6 +28,8 @@ def is_command(command):
 			time.sleep(3)
 			current_save = os.listdir(os.path.join(os.getcwd(),'saves'))[0]
 			try:
+				subprocess.run('mkdir reverts', shell=True)
+				subprocess.run('cp saves/server.zip reverts', shell=True)
 				subprocess.run('rm saves/server.zip', shell=True)
 			except:
 				print("no saves yet")
@@ -55,6 +57,18 @@ def is_command(command):
 		#run map
 		clean()
 		subprocess.run('./run.sh',shell=True)
+	elif command == "~revert":
+		try:
+			subprocess.run('cp reverts/* saves', shell=True)
+			subprocess.run('rm reverts/*', shell=True)
+			subprocess.run('pkill factorio',shell=True)
+			clean()
+			subprocess.run('./run.sh',shell=True)
+		except:
+			print("no reverts yet")
+			break
+
+
 
 #is an admin saying a command?
 def find_command(line):
@@ -80,7 +94,7 @@ def find_command(line):
 #time.sleep(3)
 
 admin_list = []
-command_list = ["~reset", "~back", "~stop"]
+command_list = ["~reset", "~back", "~stop","~revert"]
 #make sure to start with clean log file
 with open('log.txt',"r+") as f:
 	#clear file
