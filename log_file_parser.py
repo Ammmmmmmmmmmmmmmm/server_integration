@@ -74,6 +74,7 @@ def is_command(command):
 				subprocess.run('rm reverts/*', shell=True)
 				subprocess.run('pkill factorio',shell=True)
 				clean()
+				time.sleep(3)
 				subprocess.run('./run.sh',shell=True)
 			except:
 				print("no reverts yet")
