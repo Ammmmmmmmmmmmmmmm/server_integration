@@ -20,7 +20,10 @@ def is_command(command):
 		subprocess.run('./stop.sh', shell=True)
 	#restart server from previous save
 	elif command == "~back":
-		#stop factorio
+		
+		if "reverts" not in os.listdir(os.getcwd()):
+			subprocess.run('mkdir reverts', shell=True)
+			
 		if len(os.listdir(os.path.join(os.getcwd(),'saves'))) < 2:
 			print("can't go back anymore")
 		else:
@@ -28,7 +31,6 @@ def is_command(command):
 			time.sleep(3)
 			current_save = os.listdir(os.path.join(os.getcwd(),'saves'))[0]
 			try:
-				subprocess.run('mkdir reverts', shell=True)
 				subprocess.run('cp saves/server.zip reverts', shell=True)
 				subprocess.run('rm saves/server.zip', shell=True)
 			except:
@@ -58,15 +60,18 @@ def is_command(command):
 		clean()
 		subprocess.run('./run.sh',shell=True)
 	elif command == "~revert":
-		try:
-			subprocess.run('cp reverts/* saves', shell=True)
-			subprocess.run('rm reverts/*', shell=True)
-			subprocess.run('pkill factorio',shell=True)
-			clean()
-			subprocess.run('./run.sh',shell=True)
-		except:
-			print("no reverts yet")
-			break
+		if os.listdir("reverts") == []:
+			print("nothing to revert to yet")
+		else:
+			try:
+				subprocess.run('cp reverts/* saves', shell=True)
+				subprocess.run('rm reverts/*', shell=True)
+				subprocess.run('pkill factorio',shell=True)
+				clean()
+				subprocess.run('./run.sh',shell=True)
+			except:
+				print("no reverts yet")
+				break
 
 
 
