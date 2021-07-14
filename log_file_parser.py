@@ -1,35 +1,41 @@
 #!/usr/bin/env python3
+
 import subprocess
 import time
 import re
 import json
 import os
 
+
 def clean():
+	"""clean log file"""
 	with open('log.txt',"r+") as f:
 			#clear file
-			print("clearing file")
 			f.truncate(0)
 
-#figure out what command it is and execute
-def is_command(command):
 
-	#makes saves folder
-	if "saves" not in os.listdir(os.getcwd()):
-		subprocess.run('mkdir saves', shell=True)
-	if "reverts" not in os.listdir(os.getcwd()):
-		subprocess.run('mkdir reverts', shell=True)
-	
+def find_command(line):
+	"""Find if admin is saying a command"""
+	for admin in admin_list:
+		for command in command_list:
+			pattern = r"^\d+-\d+-\d+\s\d+:\d+:\d+\s\[CHAT\].*"+re.escape(admin)+r":.*"+re.escape(command)+r"$"
+			match = re.search(pattern, line,re.IGNORECASE)
+			if match != None:
+				is_command(command)
+
+
+def is_command(command):
+	"""Figure out what command it is and execute"""
 
 	#stop server and python script
-	print("command listed above initiated")
 	if command == "~stop":
-		f.truncate(0)
+		clean()
 		subprocess.run('./stop.sh', shell=True)
-	#restart server from previous save
+
+	#restart server from previous save by moving current save to revert folder
 	elif command == "~back":	
 		if len(os.listdir(os.path.join(os.getcwd(),'saves'))) < 2:
-			print("can't go back anymore")
+			pass
 		else:
 			subprocess.run('pkill factorio',shell=True)
 			time.sleep(3)
@@ -38,79 +44,46 @@ def is_command(command):
 				if os.path.getmtime(os.path.join(os.getcwd(),'saves',save)) > os.path.getmtime(os.path.join(os.getcwd(),'saves',current_save)):	
 					current_save = save
 			path = os.path.join(os.getcwd(),'saves',current_save)
-
-			try:
-				subprocess.run('cp {} reverts'.format(path), shell=True)
-				subprocess.run('rm {}'.format(path), shell=True)
-			except:
-				print("no saves yet")
-
-			print('removing {}'.format(path))
+			subprocess.run('cp {} reverts'.format(path), shell=True)
+			subprocess.run('rm {}'.format(path), shell=True)
 			subprocess.run('rm {}'.format(path), shell=True)
 			clean()
-			print("is running")
 			subprocess.run('./run.sh',shell=True)
+
 	#delete saves and make a new map
 	elif command == "~reset":
-		print("reset initiated")
-		#stop factorio
 		subprocess.run('pkill factorio',shell=True)
-		#remove previous saves
-		try:
-			subprocess.run('rm saves/*',shell=True)
-		except:
-			print("no saves yet")
-		#make map
+		subprocess.run('rm saves/*',shell=True)
 		subprocess.run('./new_map.sh',shell=True)
-		#run map
 		clean()
 		subprocess.run('./run.sh',shell=True)
+
+	#revert back command and go back the the initial map
 	elif command == "~revert":
 		if os.listdir("reverts") == []:
-			print("nothing to revert to yet")
+			pass
 		else:
-			try:
-				subprocess.run('cp reverts/* saves', shell=True)
-				subprocess.run('rm reverts/*', shell=True)
-				subprocess.run('pkill factorio',shell=True)
-				clean()
-				time.sleep(3)
-				subprocess.run('./run.sh',shell=True)
-			except:
-				print("no reverts yet")
+			subprocess.run('cp reverts/* saves', shell=True)
+			subprocess.run('rm reverts/*', shell=True)
+			subprocess.run('pkill factorio',shell=True)
+			clean()
+			time.sleep(3)
+			subprocess.run('./run.sh',shell=True)
 
 
-#is an admin saying a command?
-def find_command(line):
-	for admin in admin_list:
-		for command in command_list:
-			print("searching for {} saying {}".format(admin, command))
-			#this pattern will match a command said by an admin
-			pattern = r"^\d+-\d+-\d+\s\d+:\d+:\d+\s\[CHAT\].*"+re.escape(admin)+r":.*"+re.escape(command)+r"$"
-			match = re.search(pattern, line,re.IGNORECASE)
-			if match != None:
-				is_command(command)
+#makes saves and reverts folder if not yet there 
+if "saves" not in os.listdir(os.getcwd()):
+	subprocess.run('mkdir saves', shell=True)
+if "reverts" not in os.listdir(os.getcwd()):
+	subprocess.run('mkdir reverts', shell=True)
 
-
-
-#kill process in bash
-#pgrep ./log_file_parser.py -f | xargs -r kill
-
-
-#run script
-#subprocess.run('./practice.sh', shell=True)
-
-#sleep code
-#time.sleep(3)
 
 admin_list = []
 command_list = ["~reset", "~back", "~stop","~revert"]
-#make sure to start with clean log file
-with open('log.txt',"r+") as f:
-	#clear file
-	print("clearing file")
-	f.truncate(0)
 
+
+#start parsing loop
+clean()
 while True:
 	time.sleep(10)
 	#get current admin list
@@ -122,5 +95,5 @@ while True:
 		for line in f:
 			find_command(line)
 	#clear file
-		print("clearing file")
 		f.truncate(0)
+
