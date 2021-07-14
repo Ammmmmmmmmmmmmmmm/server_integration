@@ -34,9 +34,7 @@ def is_command(command):
 
 	#restart server from previous save by moving current save to revert folder
 	elif command == "~back":	
-		if len(os.listdir(os.path.join(os.getcwd(),'saves'))) < 2:
-			pass
-		else:
+		if len(os.listdir(os.path.join(os.getcwd(),'saves'))) > 1:
 			subprocess.run('pkill factorio',shell=True)
 			time.sleep(3)
 			current_save = os.listdir(os.path.join(os.getcwd(),'saves'))[0]
@@ -60,9 +58,7 @@ def is_command(command):
 
 	#revert back command and go back the the initial map
 	elif command == "~revert":
-		if os.listdir("reverts") == []:
-			pass
-		else:
+		if os.listdir("reverts") != []:
 			subprocess.run('cp reverts/* saves', shell=True)
 			subprocess.run('rm reverts/*', shell=True)
 			subprocess.run('pkill factorio',shell=True)
